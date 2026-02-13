@@ -1,0 +1,44 @@
+# 钉钉应用配置
+dingtalk:
+  app_key: "your_dingtalk_app_key"
+  app_secret: "your_dingtalk_app_secret"
+  # API基础地址
+  base_url: "https://oapi.dingtalk.com"
+
+# 飞书应用配置
+feishu:
+  app_id: "your_feishu_app_id"
+  app_secret: "your_feishu_app_secret"
+  # API基础地址
+  base_url: "https://open.feishu.cn"
+  # 多维表格配置
+  app_token: "your_bitable_app_token"
+  tables:
+    # 审批实例表（主表）
+    main: "tbl_main_table_id"
+    # 审批动作表（明细表）
+    action: "tbl_action_table_id"
+
+# 同步配置
+sync:
+  # 每批处理数量
+  batch_size: 20
+  # 最大重试次数
+  max_retries: 3
+  # 检查点文件路径
+  checkpoint_file: "checkpoint.json"
+  # 默认同步时间范围（小时，用于增量同步）
+  default_hours: 24
+
+# 通知配置（可选）
+notification:
+  enabled: true
+  # 飞书机器人webhook地址
+  webhook_url: "https://open.feishu.cn/open-apis/bot/v2/hook/your_webhook_token"
+
+# 日志配置
+logging:
+  level: "INFO"
+  file: "logs/sync.log"
+  max_bytes: 10485760  # 10MB
+  backup_count: 5
