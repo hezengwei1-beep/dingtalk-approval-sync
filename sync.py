@@ -8,7 +8,7 @@ from typing import Optional, Dict, List, Any
 import requests
 
 from dingtalk_client import DingTalkClient
-from feishu_client import FeishuClient
+from feishu_toolkit import TenantAuth, BitableClient
 from data_processor import DataProcessor
 from checkpoint import CheckpointManager
 from logger import setup_logger
@@ -37,11 +37,12 @@ class SyncManager:
         )
         
         fs_config = self.config['feishu']
-        self.feishu_client = FeishuClient(
+        feishu_auth = TenantAuth(
             app_id=fs_config['app_id'],
             app_secret=fs_config['app_secret'],
-            base_url=fs_config.get('base_url', 'https://open.feishu.cn')
+            base_url=fs_config.get('base_url', 'https://open.feishu.cn'),
         )
+        self.bitable = BitableClient(feishu_auth)
         
         # 初始化处理器
         self.data_processor = DataProcessor()
@@ -98,7 +99,7 @@ class SyncManager:
         Returns:
             记录字典（包含record_id）或None
         """
-        return self.feishu_client.find_record_by_field(
+        return self.bitable.find_record(
             self.feishu_app_token,
             self.main_table_id,
             "instance_id",
@@ -126,7 +127,7 @@ class SyncManager:
                 fields[key] = value
         
         # 新增或更新
-        result = self.feishu_client.upsert_bitable_record(
+        result = self.bitable.upsert_record(
             self.feishu_app_token,
             self.main_table_id,
             record_id,
@@ -169,7 +170,7 @@ class SyncManager:
         success_count = 0
         for record in batch_records:
             try:
-                self.feishu_client.upsert_bitable_record(
+                self.bitable.upsert_record(
                     self.feishu_app_token,
                     self.action_table_id,
                     None,  # 明细表每次新增，不更新

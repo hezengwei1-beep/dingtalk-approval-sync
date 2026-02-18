@@ -150,7 +150,6 @@ def check_code_modules() -> bool:
     required_modules = [
         'sync.py',
         'dingtalk_client.py',
-        'feishu_client.py',
         'data_processor.py',
         'checkpoint.py',
         'logger.py'
@@ -181,7 +180,6 @@ def test_imports() -> bool:
     modules = [
         ('sync', '主同步程序'),
         ('dingtalk_client', '钉钉客户端'),
-        ('feishu_client', '飞书客户端'),
         ('data_processor', '数据处理器'),
         ('checkpoint', '检查点管理'),
         ('logger', '日志工具')
